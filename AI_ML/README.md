@@ -1,75 +1,41 @@
-# 📁 AI/ML Templates
+# 🤖 AI/ML Templates
 
-This folder contains templates designed for AI/ML-driven workflows focused on content generation, classification, and data understanding. Each file is a ready-to-use autonomous module that can be integrated into larger automation pipelines.
-
----
-
-## 📄 auto-tag_blog_posts.json  
-Automatically generates tags for blog articles using semantic content recognition.
-
-## 📄 customer_sentiment_analysis.json  
-Analyzes the emotional tone of customer feedback to identify positive, negative, or neutral sentiment.
-
-## 📄 daily_content_ideas.json  
-Creates daily content suggestions based on trends, audience data, or seed topics.
-
-## 📄 image_captioning.json  
-Generates textual descriptions for images using computer vision and natural language generation.
-
-## 📄 product_description_generator.json  
-Autonomously crafts product descriptions from features, categories, and target tone.
-
-## 📄 resume_screening.json  
-Parses and evaluates candidate resumes for relevance and fit based on job criteria.
-
-## 📄 summarize_customer_emails.json  
-Summarizes long customer email threads into key actionable insights.
-
-## 📄 ticket_urgency_classification.json  
-Classifies customer support tickets by urgency to prioritize responses.
-
-## 📄 translate_form_submissions.json  
-Automatically detects and translates incoming form submissions to a target language.
-
-## 📄 voice_note_transcription.json  
-Transcribes voice recordings into clean, readable text using speech-to-text AI.
+A curated collection of autonomous AI/ML-powered templates tailored for tasks like content generation, classification, language processing, and data interpretation. Each JSON workflow is designed for integration into no-code or low-code environments with minimal effort.
 
 ---
 
-# 📌 Overview (in Russian)
+## 📂 Templates Overview
 
-Эта папка содержит шаблоны для автоматизации задач в области искусственного интеллекта и машинного обучения, направленных на генерацию контента, анализ данных и классификацию.
+- **auto-tag_blog_posts.json** — automatically assigns semantic tags to blog articles using natural language models.
+- **customer_sentiment_analysis.json** — analyzes tone in customer feedback to detect sentiment polarity.
+- **daily_content_ideas.json** — generates content ideas based on trends, audience input, or topic clusters.
+- **image_captioning.json** — generates human-readable image descriptions using computer vision and NLG.
+- **product_description_generator.json** — crafts product descriptions from category, features, and tone.
+- **resume_screening.json** — scans and filters resumes based on job requirements and skills.
+- **summarize_customer_emails.json** — condenses long customer emails into actionable summaries.
+- **ticket_urgency_classification.json** — evaluates ticket urgency level to prioritize customer support.
+- **translate_form_submissions.json** — translates form submissions into the target language.
+- **voice_note_transcription.json** — transcribes voice memos into structured text.
 
 ---
 
-## 📄 auto-tag_blog_posts.json  
-Автоматическая генерация тегов к блогам на основе их содержания.
+# 🤖 Шаблоны AI/ML
 
-## 📄 customer_sentiment_analysis.json  
-Анализ тональности клиентских отзывов: определение позитивной, нейтральной или негативной оценки.
+Подборка автономных шаблонов на базе ИИ и машинного обучения, предназначенных для генерации контента, классификации данных, понимания языка и аналитики. Каждый файл легко внедряется в no-code/low-code сценарии без необходимости программирования.
 
-## 📄 daily_content_ideas.json  
-Генерация ежедневных идей для публикаций с учётом трендов и интересов аудитории.
+---
 
-## 📄 image_captioning.json  
-Описание изображений с помощью компьютерного зрения и генерации текста.
+## 📂 Обзор шаблонов
 
-## 📄 product_description_generator.json  
-Создание описаний товаров на основе характеристик, стиля и целевой аудитории.
+- **auto-tag_blog_posts.json** — автоматически присваивает теги к блогам с использованием моделей понимания текста.
+- **customer_sentiment_analysis.json** — анализирует обратную связь клиента на предмет эмоциональной окраски.
+- **daily_content_ideas.json** — генерирует идеи для контента на основе трендов или интересов аудитории.
+- **image_captioning.json** — создает описания изображений на базе CV и генеративного ИИ.
+- **product_description_generator.json** — пишет описания товаров на основе характеристик и категории.
+- **resume_screening.json** — фильтрует резюме по релевантности под вакансии.
+- **summarize_customer_emails.json** — сокращает длинные письма клиентов до ключевых тезисов.
+- **ticket_urgency_classification.json** — определяет срочность обращения для приоритезации.
+- **translate_form_submissions.json** — переводит формы с одного языка на другой.
+- **voice_note_transcription.json** — преобразует голосовые заметки в текст.
 
-## 📄 resume_screening.json  
-Анализ и оценка резюме для определения соответствия заданным критериям вакансии.
-
-## 📄 summarize_customer_emails.json  
-Сжатие длинных переписок с клиентами до ключевых выводов и задач.
-
-## 📄 ticket_urgency_classification.json  
-Определение приоритетности обращений в службу поддержки.
-
-## 📄 translate_form_submissions.json  
-Перевод форм с автодетектом языка на заданный язык.
-
-## 📄 voice_note_transcription.json  
-Распознавание голосовых заметок и преобразование их в структурированный текст.
-
-
+---
