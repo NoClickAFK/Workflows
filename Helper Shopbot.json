@@ -1,0 +1,200 @@
+{
+  "name": "Helper Shopbot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        592,
+        -144
+      ],
+      "id": "efab5b30-4429-442d-8fe2-5c9464e55f52",
+      "name": "Telegram Trigger",
+      "webhookId": "108981f0-7b79-439a-aa7d-e98742e9b129",
+      "credentials": {
+        "telegramApi": {
+          "id": "6DjeaPOjIe5I5nWJ",
+          "name": "Telegram Helper Shopbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Ты — доброжелательный и профессиональный помощник компании \"Название\" \n\nОтвечай на вопросы пользователей кратко, понятно и по существу. Если вопрос неполный или требует уточнений — задай вопрос в ответ\n\nОбращайся к пользователю по имени, если оно известно\n\nИспользуй историю общения из памяти, чтобы понимать контекст. Контекст: {{$json.message.from.id}}\n\nЕсли вопрос пользователя требует доступа к внешним данным, используй соответствующий инструмент: \n\n— если спрашивают про расписание или просят создать событие \n— используй Google Calendar Tool \n— если запрос связан с аналитикой \n— используй PostHog Tool \n— если нужен свежий анализ с источниками — используй Perplexity Tool \n\nЗапрос пользователя: {{$json.message.text}}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -144
+      ],
+      "id": "1c139232-5614-4210-a980-80cdd0d8bb92",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        112
+      ],
+      "id": "bdc825da-0104-45c2-8648-01fd0ee54e7e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "3WTQ0u9QpKTIMy9m",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        832,
+        112
+      ],
+      "id": "b903f417-9a03-4f1d-95a1-7e6212c21f1f",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "messages": {
+          "message": [
+            {}
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexityTool",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        112
+      ],
+      "id": "f92b4865-0f1a-4e39-9ecb-1a50c44c32f7",
+      "name": "Message a model in Perplexity",
+      "credentials": {
+        "perplexityApi": {
+          "id": "umWxTs98v6ATxImz",
+          "name": "Perplexity account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1184,
+        -144
+      ],
+      "id": "108098f7-436f-4a56-8f56-6e3c4db80bf5",
+      "name": "Send a text message",
+      "webhookId": "795bb65c-7748-4e97-b8c9-8e57fed7d225",
+      "credentials": {
+        "telegramApi": {
+          "id": "6DjeaPOjIe5I5nWJ",
+          "name": "Telegram Helper Shopbot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model in Perplexity": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a298ffb4-0e84-43c9-9d72-40eadb246490",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "188e8a315fbbe020d0b7877998eca0939e25e2d20fb22cf957808cb1dc423660"
+  },
+  "id": "wB9fIkgQWvsVlGYw",
+  "tags": []
+}
