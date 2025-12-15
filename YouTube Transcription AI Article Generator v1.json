@@ -1,0 +1,281 @@
+{
+  "name": "YouTube_Transcription_AI_Article_Generator_v1",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getTranscript",
+        "videoUrl": "={{ $json.chatInput }}",
+        "lang": "ru"
+      },
+      "type": "n8n-nodes-supadata.supadata",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "65b1156b-91d7-4bb6-94c2-c9ed6ae34076",
+      "name": "Get video transcript",
+      "credentials": {
+        "supadataApi": {
+          "id": "TxksVjmoVWmJTWSg",
+          "name": "Supadata account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Ты — профессиональный AI-редактор и копирайтер.\n\nУ тебя есть доступ к инструменту:\nRecord Post — Create record in Airtable.\n\nТВОЯ ЗАДАЧА ОБЯЗАТЕЛЬНА И СОСТОИТ ИЗ ДВУХ ШАГОВ:\n\nШАГ 1.\nНа основе переданной транскрипции сгенерируй итоговую статью.\nРезультат должен содержать:\n- Заголовок статьи (H1, одна строка)\n- Полный текст статьи без Markdown (чистый текст)\n\nШАГ 2. (КРИТИЧЕСКИ ВАЖНО)\nСРАЗУ ПОСЛЕ ГЕНЕРАЦИИ статьи:\nты ОБЯЗАН вызвать инструмент `Record Post`\nи сохранить результат в базе данных.\n\nВызов инструмента ДОЛЖЕН:\n- выполняться ВСЕГДА\n- выполняться РОВНО ОДИН РАЗ\n- содержать ТОЛЬКО данные статьи\n\nМаппинг полей для инструмента:\n\nPost Title → заголовок статьи (без #, без Markdown)\nArticle Plain Text → полный текст статьи в виде обычного текста\n\nНе добавляй никаких комментариев.\nНе объясняй свои действия.\nНе возвращай текст пользователю — только сохрани его через инструмент.\n",
+              "role": "system"
+            },
+            {
+              "content": "=У тебя есть сырая транскрипция без знаков препинания и структуры:\n\n{{ $json.content.map(c => c.text).filter(Boolean).join(' ') }}\n\nТвоя задача — на основе этой транскрипции подготовить статью для сайта,\nнаписанную от моего лица (первое лицо: «я / мы»), как будто этот текст написал я.\n\nРоль и стиль:\n\n- Пиши как профессиональный копирайтер и редактор мирового уровня,\n  который умеет превращать устную техническую речь в сильный,\n  интересный и легко читаемый текст для сайта.\n- Текст должен читаться как цельный авторский материал,\n  а не как инструкция, конспект или документация.\n- Допустимо улучшать ритм, плавность и связность текста,\n  если это не искажает смысл исходной речи.\n\nТребования к обработке текста:\n\n1. Восстанови пунктуацию, заглавные буквы и абзацы,\n   чтобы текст стал естественным и комфортным для чтения.\n2. Сохрани смысл, порядок мыслей и логику изложения\n   максимально близко к исходной речи.\n3. Не выдумывай факты и не добавляй информацию извне:\n   - используй только то, что есть в транскрипции,\n   - не добавляй собственные выводы, советы или оценки.\n4. Убери слова-паразиты, повторы и речевые обрывы,\n   если они не несут смысловой нагрузки,\n   но не упрощай и не обедняй содержание.\n5. Статья должна охватывать все темы и области,\n   которые затрагиваются в тексте.\n   Ни один значимый смысловой блок не должен быть пропущен.\n\nНормализация терминов:\n\n- Исправляй разговорные и искажённые формулировки,\n  если из контекста однозначно понятно, о чём идёт речь.\n  Пример: «чатджи пяти 4.1» → «ChatGPT-4.1».\n- Приводи названия инструментов, сервисов и моделей\n  к общепринятому и корректному виду.\n- Не добавляй новых характеристик или версий —\n  только нормализуй форму названия.\n\nОчистка от рекламы и призывов:\n\n- Полностью исключи любые рекламные элементы и призывы,\n  включая подписки, продвижение, call-to-action,\n  упоминания каналов, чатов, ботов, шаблонов, курсов и продуктов.\n- Даже если подобные элементы присутствуют в транскрипции,\n  они не должны появляться в итоговой статье.\n\nСтруктура статьи:\n\n- Используй Markdown.\n- Начни с одного заголовка H1 (#),\n  который точно и интересно отражает тему материала.\n- Разбей текст на логические разделы с заголовками H2 (##),\n  соответствующими смысловым блокам и ходу мысли автора.\n- Если явных разделов нет,\n  сформируй их на основе логических переходов в тексте.\n- Внутри разделов:\n  - выделяй ключевые мысли и важные акценты **жирным текстом**,\n  - используй списки там, где они улучшают восприятие информации.\n- Форматирование должно помогать чтению,\n  а не отвлекать от содержания.\n\nДополнительные правила:\n\n- Текст должен выглядеть как самостоятельная статья,\n  без ссылок на источники и внешние материалы.\n- Не добавляй вступительных или заключительных комментариев от себя.\n- Не добавляй итогов, summary или рекомендаций,\n  если они прямо не следуют из исходного текста.\n- Итоговый стиль — профессиональный, уверенный,\n  живой и читаемый, без продаж и без рекламного оттенка.\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        416,
+        0
+      ],
+      "id": "62828f97-e811-4584-aca0-25951802a28e",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "3WTQ0u9QpKTIMy9m",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        160
+      ],
+      "id": "8e2140d3-49ce-46ef-b86c-77ce959f0095",
+      "name": "Telegram Trigger",
+      "webhookId": "435ec769-df44-4f43-9840-0c547443a565",
+      "credentials": {
+        "telegramApi": {
+          "id": "6DjeaPOjIe5I5nWJ",
+          "name": "Telegram Helper Shopbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5c7dc8d0-d9b4-4330-86d2-3dfcb367100f",
+      "name": "ChatInput",
+      "webhookId": "d5901030-0efd-47ae-957e-77f78a548949"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "message.content",
+        "options": {
+          "encoding": "utf8"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        752,
+        0
+      ],
+      "id": "e43dc514-d975-4f11-8259-4879f6781e02",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "7749910863",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        0
+      ],
+      "id": "96c64e75-ff78-4a5d-8732-047a7d8db51d",
+      "name": "Send a document",
+      "webhookId": "f685d559-2ab4-41b0-9642-e684edab435a",
+      "credentials": {
+        "telegramApi": {
+          "id": "6DjeaPOjIe5I5nWJ",
+          "name": "Telegram Helper Shopbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app4iMdmuJAzXeUVr",
+          "mode": "list",
+          "cachedResultName": "YouTube Transcription → AI Article Generator",
+          "cachedResultUrl": "https://airtable.com/app4iMdmuJAzXeUVr"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblNkrNIqIuzVyq9q",
+          "mode": "list",
+          "cachedResultName": "AI Article Generator",
+          "cachedResultUrl": "https://airtable.com/app4iMdmuJAzXeUVr/tblNkrNIqIuzVyq9q"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Post Title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Post_Title', ``, 'string') }}",
+            "Article Plain Text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Article_Plain_Text', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Post Title",
+              "displayName": "Post Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Article Plain Text",
+              "displayName": "Article Plain Text",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        496,
+        208
+      ],
+      "id": "11486421-f9aa-46db-b9ec-256539732ff9",
+      "name": "Record Post",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "jtTrJbhl6xQEXAn7",
+          "name": "YouTube Transcription → AI Article Generator"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Send a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get video transcript": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatInput": {
+      "main": [
+        [
+          {
+            "node": "Get video transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Post": {
+      "ai_tool": [
+        [
+          {
+            "node": "Message a model",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5b17b36c-573e-425b-be13-1f3c2ebc3a2c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "188e8a315fbbe020d0b7877998eca0939e25e2d20fb22cf957808cb1dc423660"
+  },
+  "id": "iFoUYOs42q8qh04P",
+  "tags": []
+}
